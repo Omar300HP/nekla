@@ -9,20 +9,20 @@ import {
 } from "react-native";
 import AppText from "../../components/AppText";
 import AppTextInput from "../../components/AppTextInput";
+import MoneyInput from "../../components/MoneyInput";
 
 import styles from "../../config/styles";
+import { useGlobalContext } from "../../contexts/useGlobalContext";
 
-export default function AddMoney({
-  modalVisible,
-  setModalVisible,
-  setCurrentMoney,
-  currentMoney,
-}) {
-  const [moneyToAdd, setMoneyToAdd] = useState("Ex. 750$");
+export default function AddMoney({ modalVisible, setModalVisible }) {
+  const { state, dispatch } = useGlobalContext();
+  const moneyPlaceHolder = "Ex. 750$";
+
+  const [moneyToAdd, setMoneyToAdd] = useState(moneyPlaceHolder);
 
   useEffect(() => {
     if (!modalVisible) {
-      setMoneyToAdd("Ex. 750$");
+      setMoneyToAdd(moneyPlaceHolder);
     }
   }, [modalVisible]);
 
@@ -41,36 +41,18 @@ export default function AddMoney({
           >
             <View style={style.modalView}>
               <AppText content={"Adding Money"} fontSize={32} />
-              <AppTextInput
-                keyboardType="numeric"
-                style={[
-                  styles.input,
-                  {
-                    width: 127,
-                    height: 62,
-                    fontSize: 16,
-                    color:
-                      moneyToAdd === "Ex. 750$"
-                        ? styles.colors.light
-                        : styles.colors.primary,
-                  },
-                ]}
-                maxLength={8}
-                onFocus={() => {
-                  if (moneyToAdd === "Ex. 750$") {
-                    setMoneyToAdd(null);
-                  }
-                }}
+              <MoneyInput
                 value={moneyToAdd}
-                onChangeText={(text) => {
-                  setMoneyToAdd(parseInt(text));
-                }}
+                placeHolder={moneyPlaceHolder}
+                setValue={setMoneyToAdd}
               />
               <TouchableOpacity
                 style={style.modalbtn}
                 onPress={() => {
-                  setCurrentMoney(parseInt(currentMoney) + moneyToAdd);
-                  setModalVisible(false);
+                  if (moneyToAdd !== moneyPlaceHolder && parseInt(moneyToAdd)) {
+                    dispatch({ type: "ADD_MONEY", payload: moneyToAdd });
+                    setModalVisible(false);
+                  }
                 }}
               >
                 <AppText content={"Add"} />

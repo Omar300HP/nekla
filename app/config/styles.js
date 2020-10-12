@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 import Constants from "expo-constants";
 
+// import { Dimensions, StatusBar } from "react-native";
+
+// const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("screen");
+
 const colors = {
   backgroundColor: "#F8F2F1",
   primary: "#EF866B",
@@ -16,6 +20,7 @@ export default styles = {
   ...StyleSheet.create({
     appContainer: {
       flex: 1,
+      // height: SCREEN_HEIGHT,
       paddingTop: Constants.statusBarHeight,
       backgroundColor: colors.backgroundColor,
       alignItems: "center",

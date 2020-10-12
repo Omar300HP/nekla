@@ -2,10 +2,10 @@ import React from "react";
 import { View } from "react-native";
 
 import styles from "../config/styles";
-import { useRoute } from "../contexts/useRoute";
+import { useGlobalContext } from "../contexts/useGlobalContext";
 
 export default function MainContainer({ Component }) {
-  const { selectedRoute, setSelectedRoute } = useRoute();
+  const { state, dispatch } = useGlobalContext();
 
   return <View style={styles.container}>{Component}</View>;
 }

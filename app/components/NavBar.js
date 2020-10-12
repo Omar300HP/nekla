@@ -3,31 +3,22 @@ import { View, StyleSheet, TouchableHighlight } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
 import styles from "../config/styles";
-import { useRoute } from "../contexts/useRoute";
+import { useGlobalContext } from "../contexts/useGlobalContext";
 
 export default function NavBar() {
-  const { selectedRoute, setSelectedRoute } = useRoute();
+  const { state, dispatch } = useGlobalContext();
   const screens = [
     {
       icon: "home",
       name: "home",
-      fn: () => {
-        setSelectedRoute("home");
-      },
     },
     {
       icon: "flag",
       name: "goals",
-      fn: () => {
-        setSelectedRoute("goals");
-      },
     },
     {
       icon: "back-in-time",
       name: "report",
-      fn: () => {
-        setSelectedRoute("report");
-      },
     },
   ];
 
@@ -39,7 +30,7 @@ export default function NavBar() {
             underlayColor={styles.colors.light}
             style={[
               style.touchContainer,
-              selectedRoute === route.name
+              state.route === route.name
                 ? {
                     backgroundColor: styles.colors.light,
                     // borderColor: styles.colors.primary,
@@ -48,15 +39,15 @@ export default function NavBar() {
                 : null,
             ]}
             onPress={() => {
-              route.fn();
+              dispatch({ payload: route.name, type: "SELECT_ROUTE" });
             }}
             key={index}
           >
             <View style={style.iconContainer}>
               <Entypo
                 name={route.icon}
-                size={selectedRoute === route.name ? 54 : 34}
-                style={selectedRoute !== route.name && { opacity: 0.6 }}
+                size={state.route === route.name ? 54 : 34}
+                style={state.route !== route.name && { opacity: 0.6 }}
                 color={styles.colors.primary}
               />
             </View>
